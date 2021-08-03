@@ -8,7 +8,7 @@ Instrução CMPI/CMPIMED:
 
     -cmpi r0, #0
 
-Format: < inst(6) | Rx(3) | xxxxxxb0 >  + 16bit Numero
+Format: < inst(6) | Rx(3) | xxxxxxx >  + 16bit Numero
 
 Faz o compare entre o registrador passado e o número passado, setando as flags
 
