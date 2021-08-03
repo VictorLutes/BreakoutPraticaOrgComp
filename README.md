@@ -5,6 +5,7 @@ Link explicativo do jogo: https://youtu.be/yIJ2XbERLA4
 
 
 Instrução CMPI/CMPIMED:
+
     -cmpi r0, #0
 
 Format: < inst(6) | Rx(3) | xxxxxxb0 >  + 16bit Numero
