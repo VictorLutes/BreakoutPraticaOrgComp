@@ -32,7 +32,7 @@ Do todos os comandos...
 
 // Selecao do Mux2
 #define sULA 0
-#define sDATA_OUT 1
+#define sDATA_OUT 5
 //#define sM4 2
 //#define sSP 3
 #define sTECLADO 4
@@ -401,12 +401,12 @@ loop:
 				case MOV:
 					if(pega_pedaco(IR,0,0)==0){
 						selM4 = ry;
-						selM2=sM4;
-						LoadReg[rx]=1;
+						selM2 = sM4;
+						LoadReg[rx] = 1;
 					}
 					else if(pega_pedaco(IR,1,1)==0){
-						selM2=sSP;
-						LoadReg[rx]=1;
+						selM2 = sSP;
+						LoadReg[rx] = 1;
 					}
 					else{
 						selM4 = rx;
