@@ -18,7 +18,8 @@ para essa instrução é necessário adicionar uma conexão a mais no M4 com o d
 	else if(selM3 == sDATA_OUT) M3=DATA_OUT; //VOU CRIAR UMA NOVA CONEXAO COM M3 PARA SELECIONAR O DATA OUT
 	else M3 = reg[selM3]; 
 com isso, estou passando o valor imediato no M3 e o registrador no M4 entao preciso considerar essa inversão no x e y passados para a ULA usando um novo OPCODE: CMPIMED, que faz o mesmo que o CMP, mas com o x e y invertidos:
-else if(OP==CMPIMED)
+
+	else if(OP==CMPIMED)
 			{
 				result = y;
 				if(y>x){
