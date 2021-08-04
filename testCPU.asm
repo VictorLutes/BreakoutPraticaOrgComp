@@ -125,8 +125,8 @@ SaiJMP:
 	loadn r0, #28
 	loadn r1, #5
 	loadn r2, #3
-	loadn r3, #'O'
-	loadn r4, #'X'
+	loadn r3, #'P'
+	loadn r4, #'Q'
 	cmp r1, r2
 	cgr CallMaior
 	cel CallMenorIgual
@@ -139,10 +139,10 @@ CallMenorIgual:
 	rts
 
 CallSai:	
-
 	; Teste do PUSH e POP
 	loadn r0, #30
-	loadn r1, #'P'
+	loadn r1, #'R'
+	outchar r1, r0
 	push r1
 	pop r2
 	outchar r2, r0		; Printa R na linha 30

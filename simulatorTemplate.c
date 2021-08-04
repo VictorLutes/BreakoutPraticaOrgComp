@@ -32,7 +32,7 @@ Do todos os comandos...
 
 // Selecao do Mux2
 #define sULA 0
-#define sDATA_OUT 5
+#define sDATA_OUT 1
 //#define sM4 2
 //#define sSP 3
 #define sTECLADO 4
@@ -524,27 +524,61 @@ loop:
 					break;
 
 				case CALL:
-					
-					state=STATE_FETCH;
+					COND = pega_pedaco(IR,9,6);
+
+					if((COND == 0)                       	                      // NO COND
+							|| (FR[0]==1 && (COND==7))                            // GREATER
+							|| ((FR[2]==1 || FR[0]==1) && (COND==9))              // GREATER EQUAL
+							|| (FR[1]==1 && (COND==8))                            // LESSER
+							|| ((FR[2]==1 || FR[1]==1) && (COND==10))             // LESSER EQUAL
+							|| (FR[2]==1 && (COND==1))                            // EQUAL
+							|| (FR[2]==0 && (COND==2))                            // NOT EQUAL
+							|| (FR[3]==1 && (COND==3))                            // ZERO
+							|| (FR[3]==0 && (COND==4))                            // NOT ZERO
+							|| (FR[4]==1 && (COND==5))                            // CARRY
+							|| (FR[4]==0 && (COND==6))                            // NOT CARRY
+							|| (FR[5]==1 && (COND==11))                           // OVERFLOW
+							|| (FR[5]==0 && (COND==12))                           // NOT OVERFLOW
+							|| (FR[6]==1 && (COND==14))                           // NEGATIVO
+							|| (FR[9]==1 && (COND==13)))                         // DIVBYZERO
+					{
+						RW=1;
+						selM1=sSP;
+						selM5=sPC;
+						DecSP = 1;
+						state=STATE_EXECUTE;
+					}
+					else{
+						IncPC=1;
+						state=STATE_FETCH;
+					}
 					// -----------------------------
 					break;
 
 				case PUSH:
-					
+					selM1=sSP;
+					RW=1;
+					if(pega_pedaco(IR,6,6)==0){
+						selM3=rx;
+					}else{
+						selM3=8;
+					}
+					selM5=sM3;
+					DecSP=1;
 					// -----------------------------
 					state=STATE_FETCH;
 					break;
 
 				case POP:
 					//SP++;
-					
+					IncSP=1;
 					// -----------------------------
 					state=STATE_EXECUTE;
 					break;
 
 				case RTS:
 					// SP++;
-					
+					IncSP=1;
 					// -----------------------------
 					state=STATE_EXECUTE;
 					break;
@@ -612,14 +646,24 @@ loop:
 					break; 
 
 				case POP:
-					
+					selM1=sSP;
+					RW=0;
+					if(pega_pedaco(IR,6,6)==0){
+						selM2=sDATA_OUT;
+						LoadReg[rx]=1;
+					}else{
+						selM6=sDATA_OUT;
+						LoadFR=1;
+					}
 					// -----------------------------
 					state=STATE_FETCH;
 					break; 
 
 				case RTS:
 					//PC = MEMORY[SP];
-					
+					selM1=sSP;
+					RW=0;
+					LoadPC=1;
 					// -----------------------------
 					state=STATE_EXECUTE2;
 					break;
@@ -640,7 +684,7 @@ loop:
 
 			//case RTS:
 			//PC++;
-			
+			IncPC=1;
 			// -----------------------------
 			state=STATE_FETCH;
 			break;
