@@ -12,6 +12,18 @@ Format: < inst(6) | Rx(3) | xxxxxxx >  + 16bit Numero
 
 Faz o compare entre o registrador passado e o número passado, setando as flags
 
+	case CMPIMED: 
+			selM3 = sDATA_OUT; //VOU CRIAR UMA NOVA CONEXAO COM M3 PARA SELECIONAR O DATA OUT
+			selM1 = sPC;
+			RW=0;
+			selM4 = rx;
+			IncPC = 1;
+			OP = CMPIMED;
+			LoadFR = 1;
+			// -----------------------------
+			state=STATE_FETCH;
+			break;
+
 para essa instrução é necessário adicionar uma conexão a mais no M4 com o data out para receber a linha com os bits do número passado, como exemplificado na linha 734 do simuladorTemplate.c:
 
     if(selM3 == 8) M3 = temp;  // Seleciona com 8 o FR
