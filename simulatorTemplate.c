@@ -32,7 +32,7 @@ Do todos os comandos...
 
 // Selecao do Mux2
 #define sULA 0
-#define sDATA_OUT 1
+#define sDATA_OUT 5
 //#define sM4 2
 //#define sSP 3
 #define sTECLADO 4
@@ -401,12 +401,12 @@ loop:
 				case MOV:
 					if(pega_pedaco(IR,0,0)==0){
 						selM4 = ry;
-						selM2 = sM4;
-						LoadReg[rx] = 1;
+						selM2=sM4;
+						LoadReg[rx]=1;
 					}
 					else if(pega_pedaco(IR,1,1)==0){
-						selM2 = sSP;
-						LoadReg[rx] = 1;
+						selM2=sSP;
+						LoadReg[rx]=1;
 					}
 					else{
 						selM4 = rx;
@@ -460,12 +460,12 @@ loop:
 					
 				//INSTRUCAO  NOVA CRIADA PARA CMP COM UM VALOR IMEDIATO NA LINHA SEGUINTE
 				case CMPIMED: 
-					selM3 = rx;
+					selM3 = sDATA_OUT;
 					selM1 = sPC;
 					RW=0;
-					selM4 = sDATA_OUT; //VOU CRIAR UMA NOVA CONEXAO COM M4 PARA SELECIONAR O DATA OUT
+					selM4 = rx; //VOU CRIAR UMA NOVA CONEXAO COM M4 PARA SELECIONAR O DATA OUT
 					IncPC = 1;
-					OP = CMP;
+					OP = CMPIMED;
 					LoadFR = 1;
 					// -----------------------------
 					state=STATE_FETCH;
@@ -720,8 +720,7 @@ loop:
 	if (RW == 0) DATA_OUT = MEMORY[M1];  // Tem que vir antes do M2 que usa DATA_OUT
 
 
-	// Se vou selecionar o data out no M4 devo fazer isso depois de carregar o M1
-	if(selM4 == sDATA_OUT) M4=DATA_OUT; //VOU CRIAR UMA NOVA CONEXAO COM M4 PARA SELECIONAR O DATA OUT
+	
 	
 	
 	// Selecao do Mux3  --> Tem que vir antes da ULA e do M5
@@ -731,7 +730,8 @@ loop:
 	for(i=16; i--; )        
 		temp = temp + (int) (FR[i] * (pow(2.0,i))); 
 
-	if(selM3 == 8) M3 = temp;  // Seleciona com 8 o FR
+	if(selM3 == 8) M3 = temp;  // Seleciona com 8 o FR// Se vou selecionar o data out no M4 devo fazer isso depois de carregar o M1
+	else if(selM3 == sDATA_OUT) M3=DATA_OUT; //VOU CRIAR UMA NOVA CONEXAO COM M4 PARA SELECIONAR O DATA OUT
 	else M3 = reg[selM3]; 
 
 	// Operacao da ULA
@@ -941,6 +941,22 @@ ResultadoUla ULA(unsigned int x, unsigned int y, unsigned int OP, int carry) {
 					auxFRbits[LESSER] = 0;
 					auxFRbits[EQUAL] = 0;
 				}else if(x<y){
+					auxFRbits[GREATER] = 0;
+					auxFRbits[LESSER] = 1;
+					auxFRbits[EQUAL] = 0;
+				}else if(x==y){
+					auxFRbits[GREATER] = 0;
+					auxFRbits[LESSER] = 0;
+					auxFRbits[EQUAL] = 1;
+				}
+			}else if(OP==CMPIMED)
+			{
+				result = y;
+				if(y>x){
+					auxFRbits[GREATER] = 1;
+					auxFRbits[LESSER] = 0;
+					auxFRbits[EQUAL] = 0;
+				}else if(y<x){
 					auxFRbits[GREATER] = 0;
 					auxFRbits[LESSER] = 1;
 					auxFRbits[EQUAL] = 0;
