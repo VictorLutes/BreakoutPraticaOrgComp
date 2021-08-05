@@ -48,3 +48,5 @@ com isso, estou passando o valor imediato no M3 e o registrador no M4 entao prec
 					auxFRbits[EQUAL] = 1;
 				}
 			}
+link de um vídeo explicando e testando a instrução: https://youtu.be/I5FnA9apkms
+
