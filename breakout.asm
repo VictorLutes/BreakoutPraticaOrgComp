@@ -1,3 +1,5 @@
+;contato: victorcluts@gmail.com
+
 jmp main
 Msn0: string "V O C E   P E R D E U !!!"
 Msn1: string "Quer jogar novamente? s ou n"
