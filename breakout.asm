@@ -1,4 +1,4 @@
-;contato: victorcluts@gmail.com
+;contato: victorclutes@gmail.com
 
 jmp main
 Msn0: string "V O C E   P E R D E U !!!"
